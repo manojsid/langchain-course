@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 
 load_dotenv()  # take environment variables from .env.
 
@@ -19,7 +20,7 @@ After winning the 2024 T20 World Cup and winning the Player of the Match award i
 """
 
     summary_template = """
-    given the information {{information}} about a  person I want you to create"
+    given the information {information} about a person I want you to create"
     1. A short summary
     2. Two intresting facts about the person
     """
@@ -29,7 +30,8 @@ After winning the 2024 T20 World Cup and winning the Player of the Match award i
         template=summary_template
     )
 
-    llm = ChatOpenAI(model_name="gpt-5", temperature=0)
+    # llm = ChatOpenAI(model="gpt-5", temperature=0)
+    llm = ChatOllama(model="gemma3:270m", temperature=0)
 
     chain = summary_prompt_template | llm
     response = chain.invoke({"information": information})
